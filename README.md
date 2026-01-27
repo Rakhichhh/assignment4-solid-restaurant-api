@@ -37,5 +37,3 @@ utils/DatabaseConnection.java
 ## How to Run
 Open project in IntelliJ IDEA and run Main.java.
 
-## Author
-Ozzoz Amir Makhymetov
