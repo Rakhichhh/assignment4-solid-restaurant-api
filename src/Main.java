@@ -1,25 +1,50 @@
-import model.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import controller.MenuItemController;
+import model.DrinkItem;
+import model.FoodItem;
+import model.MenuItem;
+import repository.InMemoryMenuItemRepository;
+import service.MenuItemService;
+import service.impl.MenuItemServiceImpl;
+import utils.ReflectionUtils;
 
 public class Main {
     public static void main(String[] args) {
 
-        MenuItem pizza = new FoodItem(1, "Pizza", 2500, true, 450);
-        MenuItem cola = new DrinkItem(2, "Cola", 700, true, 500);
+        var repo = new InMemoryMenuItemRepository();
+        MenuItemService service = new MenuItemServiceImpl(repo);
+        MenuItemController controller = new MenuItemController(service);
 
-        List<BaseEntity> entities = new ArrayList<>();
-        entities.add(pizza);
-        entities.add(cola);
+        MenuItem burger = new FoodItem(0, "Burger", 5.99, true, 250);
+        MenuItem cola = new DrinkItem(0, "Cola", 1.50, true, 500);
 
-        for (BaseEntity e : entities) {
-            System.out.println(e.getType() + " -> " + e.toDisplayString());
+        controller.create(burger);
+        controller.create(cola);
+
+        controller.printAll();
+        controller.printSorted();
+
+        ReflectionUtils.printClassInfo(FoodItem.class);
+
+       //for screenshots
+        System.out.println("\n=== EXCEPTION DEMO ===");
+
+        try {
+            controller.create(new FoodItem(0, "   ", 2.0, true, 100)); // плохое имя
+        } catch (Exception e) {
+            System.out.println("Caught: " + e.getClass().getSimpleName() + " -> " + e.getMessage());
         }
-        Order order = new Order(1, "Order#1", "NEW");
-        order.addItem(new OrderItem(1, pizza, 2));
-        order.addItem(new OrderItem(2, cola, 1));
 
-        System.out.println(order.toDisplayString());
+        try {
+            controller.create(new DrinkItem(0, "Water", -1.0, true, 500)); // плохая цена
+        } catch (Exception e) {
+            System.out.println("Caught: " + e.getClass().getSimpleName() + " -> " + e.getMessage());
+        }
+        try {
+            service.delete(999); // или controller.delete(999), если добавишь в controller
+        } catch (Exception e) {
+            System.out.println("Caught: " + e.getClass().getSimpleName() + " -> " + e.getMessage());
+        }
+
     }
 }
+
