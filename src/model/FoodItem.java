@@ -1,6 +1,7 @@
 package model;
 
 public class FoodItem extends MenuItem {
+
     private int grams;
 
     public FoodItem(int id, String name, double price, boolean available, int grams) {
@@ -9,13 +10,30 @@ public class FoodItem extends MenuItem {
     }
 
     @Override
-    public String getType() { return "FoodItem"; }
+    public String getType() {
+        return "FoodItem";
+    }
 
     @Override
-    public String getCategory() { return "FOOD"; }
+    public String getCategory() {
+        return "FOOD";
+    }
 
     @Override
     public String toDisplayString() {
-        return shortInfo() + " | FOOD | price=" + price + " | grams=" + grams + " | available=" + available;
+        return shortInfo()
+                + " | FOOD | price=" + price
+                + " | grams=" + grams
+                + " | available=" + available;
     }
+
+    public int getGrams() {
+        return grams;
+    }
+
+    public void setGrams(int grams) {
+        this.grams = grams;
+    }
+}
+
 }
