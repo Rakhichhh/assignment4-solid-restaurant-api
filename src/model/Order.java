@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Order extends BaseEntity implements Validatable {
+
     private String status;
     private final List<OrderItem> items = new ArrayList<>();
 
@@ -13,11 +14,15 @@ public class Order extends BaseEntity implements Validatable {
     }
 
     @Override
-    public String getType() { return "Order"; }
+    public String getType() {
+        return "Order";
+    }
 
     @Override
     public String toDisplayString() {
-        return shortInfo() + " | status=" + status + " | total=" + calculateTotal();
+        return shortInfo()
+                + " | status=" + status
+                + " | total=" + calculateTotal();
     }
 
     public void addItem(OrderItem item) {
@@ -26,7 +31,9 @@ public class Order extends BaseEntity implements Validatable {
 
     public double calculateTotal() {
         double sum = 0;
-        for (OrderItem i : items) sum += i.calculateLineTotal();
+        for (OrderItem i : items) {
+            sum += i.calculateLineTotal();
+        }
         return sum;
     }
 
@@ -34,7 +41,20 @@ public class Order extends BaseEntity implements Validatable {
     public void validate() {
         if (name == null || name.trim().isEmpty())
             throw new IllegalArgumentException("Order name cannot be empty");
+
         if (items.isEmpty())
             throw new IllegalArgumentException("Order must contain at least one item");
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public List<OrderItem> getItems() {
+        return items;
     }
 }
